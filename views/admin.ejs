@@ -1,0 +1,35 @@
+<h1>Hi <%=name%></h1>
+<style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    </style>
+<h1>See all the Users</h1>
+
+   
+</div>
+<div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Rank</th>
+          </tr>
+        <% for(let i=0; i<table.length; i++){ %>
+         <tr>
+           <td><%=table[i].id %></td>
+           <td><%=table[i].name%></td>
+           <td><%=table[i].email%></td>
+           <td><%=table[i].rank%></td>
+         </tr>
+        
+        <% } %> 
+       </table>    
+</div>
+
+
+<div> <form action="/logout?_method=DELETE" method="POST">
+    <button type ="submit">Log out</button>
+</form></div>

@@ -1,0 +1,55 @@
+<h1>Hi <%=name%></h1>
+<style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    </style>
+<h1>Register New Users with defining their Rank and See All the users</h1>
+<form action="/register/manager" method="POST">
+    <div>
+        <Label for="name">Name</Label>
+        <input type ="text" id="name" name="name" required>
+        <br>
+    </div>
+    <div>
+        <Label for="email">Email</Label>
+        <input type ="email" id="email" name="email" required>
+    </div>
+    <div>
+        <Label for="password">Password</Label>
+        <input type ="password"  id="password" name="password" required>
+    </div>
+    <div>
+        <Label >Rank</Label><br>
+        <input type ="radio"  id="basic" name="rank" value="basic" required>
+        <label for="basic">Basic</label><br>
+        <input type ="radio"  id="admin" name="rank" value="admin" required>
+        <label for="admin">Admin</label><br>
+    </div>
+   <button type="submit">Register User</button>
+</form>
+<div>
+    <form action="/logout?_method=DELETE" method="POST">
+        <button type ="submit">Log out</button>
+    </form>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Rank</th>
+          </tr>
+        <% for(let i=0; i<table.length; i++){ %>
+         <tr>
+           <td><%=table[i].id %></td>
+           <td><%=table[i].name%></td>
+           <td><%=table[i].email%></td>
+           <td><%=table[i].rank%></td>
+         </tr>
+        
+        <% } %> 
+       </table>    
+</div>

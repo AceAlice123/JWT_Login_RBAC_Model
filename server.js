@@ -12,7 +12,7 @@ const bcrypt= require('bcrypt');
 const MethodOverride =require('method-override');
 const jwt = require('jsonwebtoken');
 
-const expiration = 60; // logged in for a minute
+const expiration = 120; // logged in for a minute
 
 const cookieParser = require('cookie-parser');
 
@@ -51,8 +51,11 @@ app.use(passport.session())
 app.use(MethodOverride('_method'));
 
 app.get('/', checkAuthen,(req,res)=>{
-  
-    res.render('index.ejs',{name:req.user.user.name});
+    if(req.user.user.rank===Rank.Manager){
+        res.render('manager.ejs',{table:Users,name:req.user.user.name});
+    }
+    else if(req.user.user.rank===Rank.Admin){res.render('admin.ejs',{table:Users,name:req.user.user.name});}
+    else{res.render('index.ejs',{name:req.user.user.name});}
 })
 app.get('/register', checkNotAuthen,(req,res)=>{
     res.render('register.ejs');
@@ -67,6 +70,7 @@ app.get('/login/token', checkAuthensession, (req, res) => {
     res.redirect('/');
     
 })
+
 app.post('/login', passport.authenticate('local', {
     successFlash: true,
     failureFlash: true,
@@ -83,7 +87,7 @@ app.post('/register',async (req,res)=>{
             name:req.body.name,
             email:req.body.email,
             password:hashedP,
-            rank:Rank.basic
+            rank:Rank.Basic
         })
 
        
@@ -94,6 +98,31 @@ app.post('/register',async (req,res)=>{
     }
     console.log(Users) // see all the Users as new users register on console 
 })
+
+app.post('/register/manager',authRole(Rank.Manager),async (req,res)=>{
+    try {
+        // storing a hashed password 
+        console.log(req.user.rank);
+        const hashedP=await bcrypt.hash(req.body.password,10);
+        let new_rank= null;
+        if(req.body.rank==='admin'||req.body.rank==='basic'){new_rank= req.body.rank;}else{return res.status(404).send('No such Rank');};
+        Users.push({
+            id:Date.now().toString(),
+            name:req.body.name,
+            email:req.body.email,
+            password:hashedP,
+            rank:new_rank
+        })
+        res.flash('User Regitered Successfully');
+        console.log(Users);
+
+    }
+    catch{
+        res.redirect('/register');
+    }
+    console.log(Users) // see all the Users as new users register on console 
+})
+
 app.delete( '/logout',(req,res)=>{
     res.clearCookie('access_token');
     req.logOut(passport.LogoOtOptions,(err)=>{return res.status(300).send(err)});
@@ -156,6 +185,15 @@ function checkNotAuthen(req,res,next){
         
     } catch (err) {
         return res.status(404).send('Forbidden: token not found');
+    }
+}
+function authRole(role){
+    return (req,res,next)=>{
+        if(req.user.rank!==role){
+            res.status(401)
+            return res.send('Forbidden: Not Accessible');
+        }
+        next();
     }
 }
 app.listen(port);
