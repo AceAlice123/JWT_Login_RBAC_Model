@@ -6,7 +6,7 @@ const app=express();
 const passport=require('passport');
 const intializePassport=require('./passport-config');
 const flash=require('express-flash');
-
+const {Rank,Users}= require('./data');
 const session =require('express-session');
 const bcrypt= require('bcrypt');
 const MethodOverride =require('method-override');
@@ -31,7 +31,7 @@ intializePassport(
     (id)=>Users.find(u=>u.id===id)
 );
 // Users Table
-const Users =[]
+// const Users =[]
 
 
 
@@ -51,7 +51,7 @@ app.use(passport.session())
 app.use(MethodOverride('_method'));
 
 app.get('/', checkAuthen,(req,res)=>{
-   
+  
     res.render('index.ejs',{name:req.user.user.name});
 })
 app.get('/register', checkNotAuthen,(req,res)=>{
@@ -61,7 +61,7 @@ app.get('/login',checkNotAuthen, (req,res)=>{
     res.render('login.ejs');
 })
 app.get('/login/token', checkAuthensession, (req, res) => {
-   
+    
     const token =  generateAccessToken(req.user); // Generate JWT token
     res.cookie("access_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
     res.redirect('/');
@@ -82,7 +82,8 @@ app.post('/register',async (req,res)=>{
             id:Date.now().toString(),
             name:req.body.name,
             email:req.body.email,
-            password:hashedP
+            password:hashedP,
+            rank:Rank.basic
         })
 
        
@@ -91,7 +92,7 @@ app.post('/register',async (req,res)=>{
     catch{
         res.redirect('/register');
     }
-    console.log(Users)
+    console.log(Users) // see all the Users as new users register on console 
 })
 app.delete( '/logout',(req,res)=>{
     res.clearCookie('access_token');
@@ -105,7 +106,7 @@ app.delete( '/logout',(req,res)=>{
         return null;
     }
     const payload={
-        user:{email:user.email,name:user.name,id:user.id},exp:Date.now()/1000+expiration
+        user:{email:user.email,name:user.name,id:user.id,rank:user.rank},exp:Date.now()/1000+expiration
     };
     return jwt.sign(payload,access_key);
 }
