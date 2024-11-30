@@ -99,7 +99,7 @@ app.post('/register',async (req,res)=>{
     console.log(Users) // see all the Users as new users register on console 
 })
 
-app.post('/register/manager',authRole(Rank.Manager),async (req,res)=>{
+app.post('/register/manager',checkAuthen,authRole(Rank.Manager),async (req,res)=>{
     try {
         // storing a hashed password 
         console.log(req.user.rank);
