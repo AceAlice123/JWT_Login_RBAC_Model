@@ -15,15 +15,25 @@ const jwt = require('jsonwebtoken');
 const expiration = 60; // logged in for a minute
 
 const cookieParser = require('cookie-parser');
-app.use(cookieParser(process.env.COOKIE_SECRET));
+
+// Setting Environment Variables
+s_key=process.env.SESSION_KEY || 's_key';
+port =process.env.PORT|| 3000;
+access_key =process.env.ACCESS_KEY|| 'access123'
+cks=process.env.COOKIE_SECRET||'cookie123'
+
+app.use(cookieParser(cks));
+
 
 intializePassport(
     passport,
     (email)=>Users.find(u=>u.email===email),
     (id)=>Users.find(u=>u.id===id)
 );
-
+// Users Table
 const Users =[]
+
+
 
 
 app.set('view-engine','ejs');
@@ -32,7 +42,7 @@ app.use(express.json())
 app.use(flash());
 
 app.use(session({
-    secret:process.env.SESSION_KEY,
+    secret:s_key,
     resave:false,
     saveUninitialized:false
 }));
@@ -97,7 +107,7 @@ app.delete( '/logout',(req,res)=>{
     const payload={
         user:{email:user.email,name:user.name,id:user.id},exp:Date.now()/1000+expiration
     };
-    return jwt.sign(payload,process.env.ACCESS_KEY);
+    return jwt.sign(payload,access_key);
 }
 
 function checkAuthensession(req,res,next){
@@ -119,14 +129,15 @@ function checkAuthen(req,res,next){
     }
 
     try {
-        jwt.verify(token, process.env.ACCESS_KEY,(err,user)=>{
-            if(err){return res.status(403).redirect('/login');}
+        jwt.verify(token, access_key,(err,user)=>{
+            if(err){return res.status(404).redirect('/login');}
             req.user = user;
             next();
         });
         
     } catch (err) {
-        return res.status(404).send('Forbidden: token Invalid Login again');
+        req.logOut(passport.LogoOtOptions,(err)=>{return res.status(300).send(err)});
+        return res.redirect('/login');
     }
 
 }
@@ -137,7 +148,7 @@ function checkNotAuthen(req,res,next){
     }
 
     try {
-        jwt.verify(token, process.env.ACCESS_KEY,(err,user)=>{
+        jwt.verify(token, access_key,(err,user)=>{
             if(err){next();}
             else{return res.redirect('/');}
         });
@@ -146,5 +157,5 @@ function checkNotAuthen(req,res,next){
         return res.status(404).send('Forbidden: token not found');
     }
 }
-app.listen(process.env.PORT);
-console.log(`Listening on http://localhost:${process.env.PORT}`);
+app.listen(port);
+console.log(`Listening on http://localhost:${port}`);
