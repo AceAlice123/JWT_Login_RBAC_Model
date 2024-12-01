@@ -1,3 +1,34 @@
+<head>
+    <style>
+        body{
+            align-items: center;
+        }
+        h1{
+            text-align: center;
+        }
+        button {
+    display: block;
+    margin-left: 47%; /* Center the button horizontally */
+    margin-top: 10%; /* Add top margin for spacing */
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;  
+
+    cursor: pointer;
+    border-radius: 
+ 3px;
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+    </style> 
+</head>
 <h1>Hi <%=name%></h1>
 <form action="/logout?_method=DELETE" method="POST">
     <button type ="submit">Log out</button>
