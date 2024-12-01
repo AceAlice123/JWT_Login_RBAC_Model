@@ -12,7 +12,7 @@ const bcrypt= require('bcrypt');
 const MethodOverride =require('method-override');
 const jwt = require('jsonwebtoken');
 
-const expiration = 120; // logged in for a minute
+const expiration = 1200; // logged in for a minute
 
 const cookieParser = require('cookie-parser');
 
@@ -30,6 +30,7 @@ intializePassport(
     (email)=>Users.find(u=>u.email===email),
     (id)=>Users.find(u=>u.id===id)
 );
+
 // Users Table
 // const Users =[]
 
@@ -51,11 +52,11 @@ app.use(passport.session())
 app.use(MethodOverride('_method'));
 
 app.get('/', checkAuthen,(req,res)=>{
-    if(req.user.user.rank===Rank.Manager){
-        res.render('manager.ejs',{table:Users,name:req.user.user.name});
+    if(req.user.rank===Rank.Manager){
+        res.render('manager.ejs',{table:Users,name:req.user.name});
     }
-    else if(req.user.user.rank===Rank.Admin){res.render('admin.ejs',{table:Users,name:req.user.user.name});}
-    else{res.render('index.ejs',{name:req.user.user.name});}
+    else if(req.user.rank===Rank.Admin){res.render('admin.ejs',{table:Users,name:req.user.name});}
+    else{res.render('index.ejs',{name:req.user.name});}
 })
 app.get('/register', checkNotAuthen,(req,res)=>{
     res.render('register.ejs');
@@ -81,7 +82,7 @@ app.post('/login', passport.authenticate('local', {
 app.post('/register',async (req,res)=>{
     try {
         // storing a hashed password 
-        const hashedP=await bcrypt.hash(req.body.password,10);
+        let hashedP=await bcrypt.hash(req.body.password,10);
         Users.push({
             id:Date.now().toString(),
             name:req.body.name,
@@ -99,21 +100,19 @@ app.post('/register',async (req,res)=>{
     console.log(Users) // see all the Users as new users register on console 
 })
 
-app.post('/register/manager',checkAuthen,authRole(Rank.Manager),async (req,res)=>{
+app.post('/register/newusers',checkAuthen,authRole(Rank.Manager),async (req,res)=>{
     try {
-        // storing a hashed password 
         console.log(req.user.rank);
-        const hashedP=await bcrypt.hash(req.body.password,10);
-        let new_rank= null;
-        if(req.body.rank==='admin'||req.body.rank==='basic'){new_rank= req.body.rank;}else{return res.status(404).send('No such Rank');};
+        console.log(req.body.rank);
+        let hashedP=await bcrypt.hash(req.body.password,10);
+        if(req.body.rank!==Rank.Admin && req.body.rank!==Rank.Basic){return res.status(404).send('No such Rank Allowed');};
         Users.push({
             id:Date.now().toString(),
             name:req.body.name,
             email:req.body.email,
             password:hashedP,
-            rank:new_rank
+            rank:req.body.rank
         })
-        res.flash('User Regitered Successfully');
         console.log(Users);
 
     }
@@ -130,7 +129,6 @@ app.delete( '/logout',(req,res)=>{
 })
 
  function generateAccessToken(user) {
-    console.log('User object:', user); // Log the user object for inspection
     if (!user || !user.email) {
         return null;
     }
@@ -161,7 +159,8 @@ function checkAuthen(req,res,next){
     try {
         jwt.verify(token, access_key,(err,user)=>{
             if(err){return res.status(404).redirect('/login');}
-            req.user = user;
+            req.user = user.user;
+            
             next();
         });
         
@@ -189,6 +188,7 @@ function checkNotAuthen(req,res,next){
 }
 function authRole(role){
     return (req,res,next)=>{
+        console.log(req.user.rank);
         if(req.user.rank!==role){
             res.status(401)
             return res.send('Forbidden: Not Accessible');
