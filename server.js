@@ -12,7 +12,7 @@ const bcrypt= require('bcrypt');
 const MethodOverride =require('method-override');
 const jwt = require('jsonwebtoken');
 
-const expiration = 180; // logged in for 3 minutes
+const expiration = 1800; // logged in for 3 minutes
 
 const cookieParser = require('cookie-parser');
 
@@ -41,7 +41,7 @@ app.set('view-engine','ejs');
 app.use(express.urlencoded({extended:false}));
 app.use(express.json())
 app.use(flash());
-
+app.use('/css', express.static('css'));
 app.use(session({
     secret:s_key,
     resave:false,
@@ -102,8 +102,6 @@ app.post('/register',async (req,res)=>{
 
 app.post('/register/newusers',checkAuthen,authRole(Rank.Manager),async (req,res)=>{
     try {
-        console.log(req.user.rank);
-        console.log(req.body.rank);
         let hashedP=await bcrypt.hash(req.body.password,10);
         if(req.body.rank!==Rank.Admin && req.body.rank!==Rank.Basic){return res.status(404).send('No such Rank Allowed');};
         Users.push({
@@ -113,13 +111,14 @@ app.post('/register/newusers',checkAuthen,authRole(Rank.Manager),async (req,res)
             password:hashedP,
             rank:req.body.rank
         })
-        console.log(Users);
+        res.successFlash("User Registered successfully");
+        console.log(Users) // see all the Users as new users register on console 
 
     }
     catch{
         res.redirect('/register');
     }
-    console.log(Users) // see all the Users as new users register on console 
+    
 })
 
 app.delete( '/logout',(req,res)=>{
@@ -159,7 +158,7 @@ function checkAuthen(req,res,next){
     try {
         jwt.verify(token, access_key,(err,user)=>{
             if(err){return res.status(404).redirect('/login');}
-            req.user = user.user;
+            req.user = user.user; // user object was set in payload 
             
             next();
         });
@@ -188,7 +187,6 @@ function checkNotAuthen(req,res,next){
 }
 function authRole(role){
     return (req,res,next)=>{
-        console.log(req.user.rank);
         if(req.user.rank!==role){
             res.status(401)
             return res.send('Forbidden: Not Accessible');

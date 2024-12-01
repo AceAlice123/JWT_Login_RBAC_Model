@@ -1,0 +1,135 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    padding: 10px;
+
+
+} 
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    border-radius: 1px solid;
+    border-top: #000000;
+    background-color: #d4d1d1;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Button Styles */
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+
+/* Form Styles */
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+/* Form Styles */
+form {
+    width: 400px; /* Adjust width as needed */
+    margin: 0 auto; /* Center the form */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    display: inherit;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 3px;
+    width: 100%; /* Make buttons full width */
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+#RankLabel {
+    text-align:justify ;
+
+}
+#LOGOUT {
+    background-color:#ea573d;
+}
+#LOGOUT:hover{
+    background-color:#ff4422;
+}
+label {
+    display: inline-block; /* Display label and radio button inline */
+    margin-right: 10px; /* Add spacing between label and radio button */
+}
+
+input[type="radio"] {
+    vertical-align: middle; /* Align radio button vertically with text */
+}

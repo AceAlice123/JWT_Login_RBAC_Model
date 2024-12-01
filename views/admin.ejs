@@ -1,10 +1,8 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="css\admin.css">
+</head>
+
 <h1>Hi <%=name%></h1>
-<style>
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    </style>
 <h1>See all the Users</h1>
 
    
@@ -29,7 +27,7 @@
        </table>    
 </div>
 
-
-<div> <form action="/logout?_method=DELETE" method="POST">
-    <button type ="submit">Log out</button>
-</form></div>
+<br>
+<div> <form action="/logout?_method=DELETE" method="POST" id ="LOGOUTadmin">
+    <button type ="submit">Log out</button></form>
+</div>

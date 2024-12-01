@@ -1,0 +1,72 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    padding: 10px;
+
+
+} 
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    border-radius: 1px solid;
+    border-top: #000000;
+    background-color: #d4d1d1;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Button Styles */
+button {
+    display: block;
+    margin: 0 auto; /* Center the button horizontally */
+    margin-top: 20px; /* Add top margin for spacing */
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;  
+
+    cursor: pointer;
+    border-radius: 
+ 3px;
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+
+/* Form Styles */
+form {
+    text-align: right;
+}
+#LOGOUTadmin{
+    align-self: left;
+}
