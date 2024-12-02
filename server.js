@@ -12,7 +12,7 @@ const bcrypt= require('bcrypt');
 const MethodOverride =require('method-override');
 const jwt = require('jsonwebtoken');
 
-const expiry = process.env.EXP ? parseInt(process.env.EXP) : 180; // Convert to integer for numerical operations
+const expiry = process.env.EXP ? parseInt(process.env.EXP) : 180; 
 const expiration = expiry;
 const cookieParser = require('cookie-parser');
 
