@@ -12,8 +12,8 @@ const bcrypt= require('bcrypt');
 const MethodOverride =require('method-override');
 const jwt = require('jsonwebtoken');
 
-const expiration =process.env.exp || 180; // logged in for 3 minutes
-
+const expiry = process.env.EXP ? parseInt(process.env.EXP) : 180; // Convert to integer for numerical operations
+const expiration = expiry;
 const cookieParser = require('cookie-parser');
 
 // Setting Environment Variables
