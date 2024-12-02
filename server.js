@@ -12,7 +12,7 @@ const bcrypt= require('bcrypt');
 const MethodOverride =require('method-override');
 const jwt = require('jsonwebtoken');
 
-const expiration = 1800; // logged in for 3 minutes
+const expiration =process.env.exp || 180; // logged in for 3 minutes
 
 const cookieParser = require('cookie-parser');
 
