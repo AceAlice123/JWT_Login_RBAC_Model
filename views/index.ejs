@@ -29,6 +29,16 @@ button:hover {
 }
     </style> 
 </head>
+<body>
+    <script>
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                // Tab became active, reload to check JWT token
+               location.reload();
+            }
+        });
+    </script>
+  </body>
 <h1>Hi <%=name%></h1>
 <form action="/logout?_method=DELETE" method="POST">
     <button type ="submit">Log out</button>

@@ -133,3 +133,7 @@ label {
 input[type="radio"] {
     vertical-align: middle; /* Align radio button vertically with text */
 }
+body.blurred {
+    filter: blur(5px);
+    pointer-events: none; /* Prevent user interaction */
+}

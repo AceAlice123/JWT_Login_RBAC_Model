@@ -70,3 +70,7 @@ form {
 #LOGOUTadmin{
     margin-right: 45%;
 }
+body.blurred {
+    filter: blur(5px);
+    pointer-events: none; /* Prevent user interaction */
+}

@@ -1,7 +1,16 @@
 <head>
   <link rel="stylesheet" type="text/css" href="css\admin.css">
 </head>
-
+<body>
+  <script>
+      document.addEventListener('visibilitychange', function() {
+          if (document.visibilityState === 'visible') {
+              // Tab became active, reload to check JWT token
+             location.reload();
+          }
+      });
+  </script>
+</body>
 <h1>Hi <%=name%></h1>
 <h1>See all the Users</h1>
 

@@ -148,8 +148,6 @@ function checkAuthensession(req,res,next){
 }
 
 function checkAuthen(req,res,next){
-    // Extract JWT token from request headers 
-    // const authHeader = req.headers.authorization;
     const token = req.cookies.access_token; // accessing Stored Token from cookies
     if (!token) {
         return res.redirect('/login');
